@@ -1,3 +1,16 @@
+<script setup>
+import { ref } from 'vue'
+import { useAuthStore } from '../stores/authStore'
+
+const email = ref('')
+const password = ref('')
+
+const authStore = useAuthStore()
+
+const handleSignUpUser = () => {
+	authStore.signup(email.value, password.value)
+}
+</script>
 <template>
 	<!-- Форма Sign Up -->
 	<div class="space-y-6">
@@ -6,6 +19,7 @@
 				>Email address</label
 			>
 			<input
+				v-model="email"
 				type="email"
 				placeholder="Enter your email address"
 				class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors"
@@ -17,6 +31,7 @@
 				>Password</label
 			>
 			<input
+				v-model="password"
 				type="password"
 				placeholder="Enter your password"
 				class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors"
@@ -36,7 +51,14 @@
 		</div>
 
 		<button
-			class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+			class="w-full font-medium py-3 px-4 rounded-lg transition-colors"
+			:class="
+				authStore.isLoading
+					? 'bg-gray-400 cursor-not-allowed'
+					: 'bg-blue-600 hover:bg-blue-700 text-white'
+			"
+			:disabled="authStore.isLoading"
+			@click="handleSignUpUser"
 		>
 			Create an account
 		</button>
@@ -46,7 +68,6 @@
 			<a
 				href="#"
 				class="text-blue-600 hover:text-blue-500 font-medium transition-colors"
-				@click.prevent="activeTab = 'login'"
 				>Login</a
 			>
 		</p>

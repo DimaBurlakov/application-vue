@@ -78,18 +78,27 @@ export const useAuthStore = defineStore('auth', () => {
 		console.log('👋 Пользователь вышел')
 	}
 
-	const signup = async userData => {
+	const signup = async (email, password) => {
 		isLoading.value = true
 		error.value = null
 
 		try {
-			await new Promise(resolve => setTimeout(resolve, 1000))
-			if (userData.email && userData.password) {
+			await new Promise(resolve => setTimeout(resolve, 2000))
+			const foundEmail = allUsers.value.some(u => u.email === email)
+			if (foundEmail) {
+				throw new Error('Пользователь с таким email уже есть')
+			} else if (email === '' && password === '') {
+				throw new Error('Пожалуйста, заполните все поля')
+			} else {
 				user.value = {
 					id: Date.now(),
-					email: userData.email,
-					name: userData.email.split('@')[0],
+					email: email,
+					password: password,
+					name: email.split('@')[0],
+					role: `User`,
 				}
+				mockUsers.push(user.value)
+				allUsers.value.push(user.value)
 				localStorage.setItem(
 					'auth',
 					JSON.stringify({
@@ -98,8 +107,6 @@ export const useAuthStore = defineStore('auth', () => {
 					})
 				)
 				console.log('✅ Пользователь зарегистрирован!')
-			} else {
-				throw new Error('Пожалуйста, заполните все поля')
 			}
 		} catch (err) {
 			error.value = err.message

@@ -1,5 +1,5 @@
 <template>
-	<div class="p-8">
+	<form class="p-8">
 		<slot> </slot>
-	</div>
+	</form>
 </template>

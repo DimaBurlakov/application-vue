@@ -5,8 +5,6 @@ import { useAuthStore } from '../stores/authStore'
 const email = ref('')
 const password = ref('')
 
-console.log(email.value, password.value)
-
 const authStore = useAuthStore()
 
 const handleLoginUser = () => {
