@@ -120,8 +120,10 @@ export const useAuthStore = defineStore('auth', () => {
 		const authData = localStorage.getItem('auth')
 
 		if (authData) {
-			const { user: savedUser, isAuthenticated } = JSON.parse(authData)
+			const { user: savedUser, isAuthenticated: savedAuth } =
+				JSON.parse(authData)
 			user.value = savedUser
+			isAuthenticated.value = savedAuth
 			console.log('🔍 Найдена сохраненная авторизация')
 		}
 	}
